@@ -55,7 +55,7 @@ class Supervisor():
                 scaler = self.data_train["y-scaler"]
                 y = scaler.inverse_transform(y)
                 pred = scaler.inverse_transform(pred)
-                metrics['result'] = indicator(pred, y)
+                metrics['result'] = indicator(orch.tensor(pred), orch.tensor(y))
                 results = pd.DataFrame.from_dict(metrics, orient='index')
                 name_file_csv =  "results/metric_" + str(self.problem_config["p"]) + "_.csv"
                 results.to_csv(name_file_csv)
