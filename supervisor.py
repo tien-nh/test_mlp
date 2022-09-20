@@ -31,7 +31,7 @@ class Supervisor():
         self.model = self.model.to(self.device)
         for epoch in tqdm(range(self.epochs)):
             for x, y in loader : 
-                print(x.shape, y.shape)
+                # print(x.shape, y.shape)
                 self.optimizer.zero_grad()
                 x = x.to(self.device)
                 y = y.to(self.device)
