@@ -53,7 +53,7 @@ class Supervisor():
                 y = y.to(self.device)
                 metrics['result'] = indicator(pred, y)
                 results = pd.DataFrame.from_dict(metrics, orient='index')
-                name_file_csv =  "results/metric_" + str(self.model_config["p"]) + "_.csv"
+                name_file_csv =  "results/metric_" + str(self.problem_config["p"]) + "_.csv"
                 results.to_csv(name_file_csv)
 
     
