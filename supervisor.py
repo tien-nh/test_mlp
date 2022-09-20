@@ -31,13 +31,14 @@ class Supervisor():
         self.model = self.model.to(self.device)
         for epoch in tqdm(range(self.epochs)):
             for x, y in loader : 
-               self.optimizer.zero_grad()
-               x = x.to(self.device)
-               y = y.to(self.device)
-               pred = self.model(x)
-               loss = self.criterion(pred, y)
-               loss.backward()
-               self.optimizer.step()
+                print(x.shape, y.shape)
+                self.optimizer.zero_grad()
+                x = x.to(self.device)
+                y = y.to(self.device)
+                pred = self.model(x)
+                loss = self.criterion(pred, y)
+                loss.backward()
+                self.optimizer.step()
 
     def test(self, test_config): 
         print("{action:-^50}".format(action="Test"))

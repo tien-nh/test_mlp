@@ -42,6 +42,22 @@ def get_set_and_loader(X, Y, batch_size=64, shuffle=True):
 
     return dataset, loader
 
+def get_sequence_data(seq_len, future , sequence):
+    n_sample = sequence.shape[0]
+    x = [sequence[i: i + seq_len]
+         for i in range(0, n_sample - seq_len - future, future)]
+    y = [sequence[i + seq_len: i + seq_len + future]
+         for i in range(0, n_sample - seq_len - future, future)]
+    n_sample = min(len(x), len(y))
+    x = x[:n_sample]
+    y = y[:n_sample]
+    x = np.array(x).squeeze()
+    y = np.array(y)
+    if len(np.array(y).shape) == 1:
+        y = np.expand_dims(y, axis=1)
+    x = x.reshape((n_sample, seq_len))
+    y = y.reshape((n_sample, future))
+    return x, y
 
 def get_data( file_path, time, x_scaler = None, y_scaler = None):
         df = pd.read_csv(file_path)
@@ -51,10 +67,12 @@ def get_data( file_path, time, x_scaler = None, y_scaler = None):
         array = df[df.columns[1]].to_numpy()
         is_array_nan = pd.isnull(df[df.columns[1]].to_frame()).to_numpy().squeeze()
 
+        seq_len = time["l"]
+        future = time["p"]
         flag = False
         start = 0
-        x = np.empty(shape=(0, self.seq_len))
-        y = np.empty(shape=(0, self.future))
+        x = np.empty(shape=(0, seq_len))
+        y = np.empty(shape=(0, future))
 
         for i in range(len(array)):
             if flag == False:
@@ -64,9 +82,9 @@ def get_data( file_path, time, x_scaler = None, y_scaler = None):
             else:
                 if is_array_nan[i] == True or i == array.shape[0] - 1:
                     flag = False
-                    if i - start <= self.seq_len + self.future:
+                    if i - start <= seq_len + future:
                         continue
-                    temp_x, temp_y = self.get_sequence_data(array[start:i])
+                    temp_x, temp_y = get_sequence_data(seq_len, future ,array[start:i])
                     if temp_x.shape[0] != 0:
                         x = np.concatenate((x, temp_x), axis=0)
                         y = np.concatenate((y, temp_y), axis=0)
