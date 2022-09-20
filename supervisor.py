@@ -66,11 +66,12 @@ class En_DecoderSupervisor():
     def __init__(self, problem_config) :
         self.problem_config = problem_config
         self.device = problem_config['device'] if torch.cuda.is_available() else 'cpu'
-
+        self.epochs = problem_config['epochs']
         self.model = lstm_encoder_decoder.lstm_seq2seq(input_size=1, hidden_size = problem_config["hidden_size"]) 
 
 
     def train(self): 
+        print("{action:-^50}".format(action="Training"))
         self.data_train = get_data(self.problem_config["file_path"], self.problem_config)
         dataset, loader = get_set_and_loader(self.data_train["X"], self.data_train["Y"], batch_size = 0, shuffle=False)
         for X_train, Y_train in loader:
@@ -80,6 +81,7 @@ class En_DecoderSupervisor():
             loss = self.model.train_model(X_train, Y_train, n_epochs = self.epochs , target_len = self.problem_config["p"], batch_size = self.problem_config["batch_size"], training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.01, dynamic_tf = False)
     
     def test(self, test_config): 
+        print("{action:-^50}".format(action="Test"))
         data_test = get_data(self.problem_config["file_path"],test_config,self.data_train['x-scaler'],self.data_train['y-scaler'])
         metrics = {}
         dataset, loader = get_set_and_loader(data_test["X"], data_test["Y"], batch_size = 1, shuffle=False)
