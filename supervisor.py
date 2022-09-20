@@ -49,13 +49,12 @@ class Supervisor():
         metrics = {}
         for x, y in loader: 
             with torch.no_grad():
-                x = x.to(self.device)
-                y = y.to(self.device)
-                pred = self.model(x)
+                model = self.model.to('cpu')
+                pred = model(x)
 
                 scaler = self.data_train["y-scaler"]
-                y = scaler.inverse_transform(y.cpu())
-                pred = scaler.inverse_transform(pred.cpu())
+                y = scaler.inverse_transform(y)
+                pred = scaler.inverse_transform(pred)
                 metrics['result'] = indicator(pred, y)
                 results = pd.DataFrame.from_dict(metrics, orient='index')
                 name_file_csv =  "results/metric_" + str(self.problem_config["p"]) + "_.csv"
