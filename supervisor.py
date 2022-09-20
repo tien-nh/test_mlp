@@ -49,9 +49,9 @@ class Supervisor():
         metrics = {}
         for x, y in loader: 
             with torch.no_grad():
-                pred = self.model(x)
                 x = x.to(self.device)
                 y = y.to(self.device)
+                pred = self.model(x)
 
                 scaler = self.data_train["y-scaler"]
                 y = scaler.inverse_transform(y)
