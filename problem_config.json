@@ -1,7 +1,7 @@
 {
     "l" : 48,
     "p" : 12,
-    "epochs" : 1000,
+    "epochs" : 900,
     "device" : "cuda:0",
     "file_path" : "res/S0000153_Trường Tiểu học Trần Quốc Toản.csv.csv",
     "start" : "2021-12-31 23:59:59" ,
