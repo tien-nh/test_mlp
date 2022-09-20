@@ -43,7 +43,7 @@ def get_set_and_loader(X, Y, batch_size=64, shuffle=True):
     return dataset, loader
 
 
-def get_data(self, file_path, time, x_scaler = None, y_scaler = None):
+def get_data( file_path, time, x_scaler = None, y_scaler = None):
         df = pd.read_csv(file_path)
         df['time'] = pd.to_datetime(df['time'], dayfirst=True)
         df = df.sort_values(by=df.columns[0])

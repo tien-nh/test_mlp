@@ -26,7 +26,7 @@ class Supervisor():
     
     def train(self): 
         print("{action:-^50}".format(action="Training"))
-        self.data_train = get_data(self.problem_config["file_path"],self.problem_config)
+        self.data_train = get_data(self.problem_config["file_path"], self.problem_config)
         dataset, loader = get_set_and_loader(self.data_train["X"], self.data_train["Y"])
         self.model = self.model.to(self.device)
         for epoch in tqdm(range(self.epochs)):
