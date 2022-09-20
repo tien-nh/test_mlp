@@ -75,8 +75,8 @@ class En_DecoderSupervisor():
         self.data_train = get_data(self.problem_config["file_path"], self.problem_config)
         dataset, loader = get_set_and_loader(self.data_train["X"], self.data_train["Y"], batch_size = 0, shuffle=False)
         for X_train, Y_train in loader:
-            X_train = torch.permute(torch.unsqueeze(X_train, 2), (1, 0, 2)) 
-            Y_train = torch.permute(torch.unsqueeze(Y_train, 2), (1, 0, 2)) 
+            X_train = torch.permute(torch.unsqueeze(X_train, 2), (1, 0, 2)).to(self.device) 
+            Y_train = torch.permute(torch.unsqueeze(Y_train, 2), (1, 0, 2)).to(self.device)
             self.model = self.model.to(self.device)
             loss = self.model.train_model(X_train, Y_train, n_epochs = self.epochs , target_len = self.problem_config["p"], batch_size = self.problem_config["batch_size"], training_prediction = 'mixed_teacher_forcing', teacher_forcing_ratio = 0.6, learning_rate = 0.01, dynamic_tf = False)
     
