@@ -114,7 +114,7 @@ class lstm_seq2seq(nn.Module):
         self.decoder = lstm_decoder(input_size = input_size, hidden_size = hidden_size)
 
 
-    def train_model(self, input_tensor, target_tensor, n_epochs, target_len, batch_size, training_prediction = 'recursive', teacher_forcing_ratio = 0.5, learning_rate = 0.01, dynamic_tf = False):
+    def train_model(self, input_tensor, target_tensor, n_epochs, target_len, batch_size, training_prediction = 'recursive', teacher_forcing_ratio = 0.5, learning_rate = 0.01, dynamic_tf = False, device = 'cpu'):
         
         '''
         train lstm encoder-decoder
@@ -161,7 +161,7 @@ class lstm_seq2seq(nn.Module):
                     target_batch = target_tensor[:, b: b + batch_size, :]
 
                     # outputs tensor
-                    outputs = torch.zeros(target_len, batch_size, input_batch.shape[2])
+                    outputs = torch.zeros(target_len, batch_size, input_batch.shape[2]).to(device)
 
                     # initialize hidden state
                     encoder_hidden = self.encoder.init_hidden(batch_size)
