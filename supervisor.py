@@ -84,19 +84,22 @@ class En_DecoderSupervisor():
         print("{action:-^50}".format(action="Test"))
         data_test = get_data(self.problem_config["file_path"],test_config,self.data_train['x-scaler'],self.data_train['y-scaler'])
         metrics = {}
+        leng = len(data_test["Y"])
         dataset, loader = get_set_and_loader(data_test["X"], data_test["Y"], batch_size = 1, shuffle=False)
         with torch.no_grad():
-            gr , pred = [] , []
+            gr , pred = torch.zeros(leng, test_config["p"], 1),torch.zeros(leng, test_config["p"], 1)
+            i = 0
             model = self.model.to('cpu')
             for X_test, Y_test in loader:
                 X_test = torch.permute(X_test, (1,0))
                 Y_test = torch.permute(Y_test, (1,0))
-                pred_ = model.predict(X_test, self.problem_config["p"])
-                gr.append(Y_test) 
-                pred.append(pred_)
+                pred[i] = model.predict(X_test, self.problem_config["p"])
+                gr[i] = Y_test
+                i += 1  
+                # pred.append(pred_)
 
             scaler = self.data_train["y-scaler"]
-            gr , pred = torch.tensor(gr) , torch.tensor(pred)
+            # gr , pred = torch.tensor(gr) , torch.tensor(pred)
             gr = scaler.inverse_transform(gr)
             pred = scaler.inverse_transform(pred)
             metrics['result'] = indicator(torch.tensor(pred), torch.tensor(gr))

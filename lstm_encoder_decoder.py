@@ -257,6 +257,6 @@ class lstm_seq2seq(nn.Module):
             outputs[t] = decoder_output.squeeze(0)
             decoder_input = decoder_output
             
-        np_outputs = outputs.detach().numpy()
+        np_outputs = outputs.detach()
         
         return np_outputs
