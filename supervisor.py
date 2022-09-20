@@ -86,7 +86,7 @@ class En_DecoderSupervisor():
         metrics = {}
         dataset, loader = get_set_and_loader(data_test["X"], data_test["Y"], batch_size = 1, shuffle=False)
         with torch.no_grad():
-            gr , pred = [] 
+            gr , pred = [] , []
             model = self.model.to('cpu')
             for X_test, Y_test in loader:
                 X_test = torch.permute(X_test, (1,0))
