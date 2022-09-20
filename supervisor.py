@@ -54,8 +54,8 @@ class Supervisor():
                 pred = self.model(x)
 
                 scaler = self.data_train["y-scaler"]
-                y = scaler.inverse_transform(y)
-                pred = scaler.inverse_transform(pred)
+                y = scaler.inverse_transform(y.cpu())
+                pred = scaler.inverse_transform(pred.cpu())
                 metrics['result'] = indicator(pred, y)
                 results = pd.DataFrame.from_dict(metrics, orient='index')
                 name_file_csv =  "results/metric_" + str(self.problem_config["p"]) + "_.csv"
