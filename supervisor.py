@@ -101,8 +101,8 @@ class En_DecoderSupervisor():
 
             scaler = self.data_train["y-scaler"]
             # gr , pred = torch.tensor(gr) , torch.tensor(pred)
-            gr = scaler.inverse_transform(gr)
-            pred = scaler.inverse_transform(pred)
+            gr = scaler.inverse_transform(torch.squeeze(gr))
+            pred = scaler.inverse_transform(torch.squeeze(pred))
             metrics['result'] = indicator(torch.tensor(pred), torch.tensor(gr))
             results = pd.DataFrame.from_dict(metrics, orient='index')
             name_file_csv =  "results/metric_" + str(self.problem_config["p"]) + "_LSTM_EnDe.csv"
