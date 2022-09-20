@@ -53,6 +53,7 @@ class MLPSupervisor():
                 pred = model(x)
 
                 scaler = self.data_train["y-scaler"]
+                print(y.shape)
                 y = scaler.inverse_transform(y)
                 pred = scaler.inverse_transform(pred)
                 metrics['result'] = indicator(torch.tensor(pred), torch.tensor(y))
